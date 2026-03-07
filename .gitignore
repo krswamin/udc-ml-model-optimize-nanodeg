@@ -1,5 +1,11 @@
 # Ignore notebook checkpoint files
 .ipynb_checkpoints/
 
+# Ignore temporary notebook conversion outputs
+*.nbconvert.ipynb
+
 # Ignore macOS system files
 .DS_Store
+
+# Ignores any directory named data at any level in the re
+data/
