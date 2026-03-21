@@ -1,6 +1,5 @@
-# ----------------------------------------------------------
-# 🎯 I & II). LATENCY & THROUGHPUT
-# ----------------------------------------------------------
+
+# 🎯 I & II. LATENCY & THROUGHPUT
 ### 🔑 HIGH LEVEL TAKEAWAYS
 - LATENCY: time taken for a single request (all tokens)
 - THROUGHPUT: tokens per second
@@ -124,3 +123,31 @@ Cost per token
 
 ```
 
+
+
+# 🎯 III. MEMORY
+
+See README_base_vs_peak_memory.md
+
+
+
+# 🎯 IV. PERPLEXITY
+
+
+```
+def compute_perplexity(loss: float):
+    return math.exp(loss)
+```
+- Perplexity is just the exponent of loss, if and only if the loss is the negative log likelihood like cross entropy
+- Perplexity actually comes from probability theory . It has been adapted to be used as a model metric. Hence if the loss function is not a log likelihood, there is no defintion of perplexity
+
+| Loss type            | Can you compute perplexity? |
+| -------------------- | --------------------------- |
+| Cross-entropy / NLL  | ✅ Yes                       |
+| Log-likelihood-based | ✅ Yes                       |
+| Anything else        | ❌ No                        |
+
+![alt text](readme_imgs/perplexity_1.png) 
+
+## PERPLEXITY: Inverse Probability
+![alt text](readme_imgs/perplexity_2.png)
