@@ -1,4 +1,6 @@
-# Latency and Throughput
+# ----------------------------------------------------------
+# 🎯 I & II). LATENCY & THROUGHPUT
+# ----------------------------------------------------------
 ### 🔑 HIGH LEVEL TAKEAWAYS
 - LATENCY: time taken for a single request (all tokens)
 - THROUGHPUT: tokens per second
@@ -121,5 +123,4 @@ Cost per token
 +----------------------------------> Sequence length (tokens)
 
 ```
-
 
