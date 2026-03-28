@@ -1,14 +1,12 @@
-# Memory & Perplexity
-
-### 🎯 1. model() vs model.generate() 
+# 🎯 model() vs model.generate() 
 in the context of hugging face models and llm text generation
 - model(...) = single forward pass (training/eval). does not generate even one token
 - model.generate() = auto-regressive text generation loop (multiple forward passes). generates multiple tokens in a loop
 
-### 🎯 model(...): single forward pass  + no token prediction
+# 🎯 1) model(...): single forward pass  + no token prediction
 - model DOES NOT generate even one new token
 - model does one single forward pass. This gives the logits, which are the probabilities for the next token
-- These logits will have to be use to predict the next token (but that prediction is not part of a forward pass)
+- These logits will subsequently have to be processed to predict the next token (but that prediction is not part of a forward pass)
 ```
 # This below line is the only thing model does
 outputs = model(input_ids)
@@ -66,7 +64,7 @@ Predict after I love machine → logits[:, 2, :]
 ```
 - The task is to predict the next one output token only. 
 - Hence only the logits /probability of the last input token is needed
-- But model() predicts logits for all input token (even though only the last is seen)
+- But model() predicts logits for all input tokens (even though only the last is seen)
   - 🎯 KEY AHA MOMENT !!!!
 - This is because of the clever architecture of transformers, which enables parallel processing of input tokens . 
 - This is a key differentiator from previous RNNs and LSTMs
@@ -77,7 +75,7 @@ Predict after I love machine → logits[:, 2, :]
   - This simultaneous attending to is because of self attention/causal attention
 
 
-### 🎯 model.generate(): multiple forward pass + multiple token/text generation
+# 🎯 2) model.generate(): multiple forward pass + multiple token/text generation
      - auto-regressive text generation loop (multiple forward passes)
      - that means multiple forward passes and multiple tokens are generated
      - in a loop: forward pass, use output logits/probability to get next token, append next token to input and repeat to generate new tokens. (model.generate() does much more actually)
@@ -112,36 +110,104 @@ for step in range(max_new_tokens):
 | Generates new tokens           | ❌                      | ✅                  |
 | Used for inference text output | ❌                      | ✅                  |
 
-## 🎯 1.1 How is model() reflective of GPU performance if it does not generate new tokens
+
+# 🎯 3) INSIGHTS
+## 🎯 3.1 How is model() reflective of GPU performance if it does not generate new tokens
 
 ![alt text](readme_imgs/model_vs_generate_1.png) 
 
-### 1.1.1 🧠 Important Insight
+### 3.1.1 🧠 Important Insight
 - If you're only evaluating a 1024-token batch:
   - memory consumed during model() ≈ memory consumed in first step of generate()
 - If you're generating beyond 1024:
   - memory consumed during generate()  > memory consumed during model() (because of KV accumulation)
 
-## 🎯 1.2 model() vs model.generate()
-### 1.2.1 what model() does
+## 🎯 3.2 model() vs model.generate()
+### 3.2.1 what model() does
   ![alt text](readme_imgs/model_vs_generate_2.png) 
 
-### 1.2.2 what model.generate() does
+### 3.2.2 what model.generate() does
   ![alt text](readme_imgs/model_vs_generate_3.png) 
 
-## 🎯 1.3 model() vs model.generate(): with 1024 sequence
+## 🎯 3.3 model() vs model.generate(): with 1024 sequence
   ![alt text](readme_imgs/model_vs_generate_4.png) 
 
-### 1.3.1 what model() does : with 1024 sequence
+### 3.3.1 what model() does : with 1024 sequence
   ![alt text](readme_imgs/model_vs_generate_5.png) 
   ![alt text](readme_imgs/model_vs_generate_6.png) 
 
-### 1.3.2 what model.generate() does : with 1024 sequence (with KV Cache True )
+### 3.3.2 what model.generate() does : with 1024 sequence (with KV Cache True )
   ![alt text](readme_imgs/model_vs_generate_7.png) 
   ![alt text](readme_imgs/model_vs_generate_8.png) 
-### 1.3.3 what model.generate() does : with 1024 sequence (with KV Cache False )
+### 3.3.3 what model.generate() does : with 1024 sequence (with KV Cache False )
   ![alt text](readme_imgs/model_vs_generate_9.png)  | Position | Context Seen     | OUTPUT: Prediction Distribution      |
 
 
-## 🎯 1.4 model() vs model.generate() : 1024 sequence comparison
+## 🎯 3.4 model() vs model.generate() : 1024 sequence comparison table
   ![alt text](readme_imgs/model_vs_generate_10.png)
+
+
+## 🎯 3.5 model() vs model.generate(): inputs
+
+### 🎯 3.5.1 model() : What is the input ?
+Question: What is the input. Is it model(**inputs), or model(input_ids)
+Answer:
+✅ Rule of thumb
+- Training / computing loss: usually need labels and possibly attention_mask. best to use model(**inputs)
+- Evaluation / forward only (torch.no_grad()): often input_ids alone is enough. fine to use model(input_ids)
+- Batched inputs with padding: include attention_mask. best to use model(**inputs). where inputs should have the attention_mask as a dict field. rest of the fields can be missing
+
+```
+outputs = model(**inputs)    # Best, robust. definitely needed for training. 
+outputs = model(input_ids)   # Enough for inference . Enough when using with.torch.no_grad()
+```
+
+**Details**
+- Typically model(**inputs): where inputs is a dictionary of tensors with the following fields. The entire dictionary of **inputs is typically used for in the forward pass for training
+- Depending on the use case and the model, the missing fields like attention masks could be inferered from the input_ids
+
+**REQUIRED FIELD: input_ids**
+| Field       | Type               | Purpose                                                          |
+| ----------- | ------------------ | ---------------------------------------------------------------- |
+| `input_ids` | `torch.LongTensor` | Token IDs representing your text. Shape: `(batch_size, seq_len)` |
+
+**COMMON OPTIONAL FIELDS:**
+| Field                  | Type                | Purpose                                                                       |
+| ---------------------- | ------------------- | ----------------------------------------------------------------------------- |
+| `attention_mask`       | `torch.LongTensor`  | 1 = keep token, 0 = ignore (used for padding). Shape: `(batch_size, seq_len)` |
+| `position_ids`         | `torch.LongTensor`  | Overrides default positional embeddings                                       |
+| `inputs_embeds`        | `torch.FloatTensor` | Instead of `input_ids`, you can pass precomputed embeddings                   |
+| `labels`               | `torch.LongTensor`  | For training: target labels for computing loss                                |
+
+- if model is used for inference in with.torch.no_grad() mode then input_ids is sufficient. in that case model(input_ids)
+
+### 🎯 3.5.2 model() : Deploy inputs or input_ids to device. Use that as input
+
+**Deploying inputs to device. Use that as input to model**
+```
+# inputs is a dictionary. Below line will not work. You would have to deploy tensor by tensor
+inputs.to(model.device)
+outputs = model(**inputs)
+```
+
+Do this instead
+
+```
+inputs_on_device = {k: v.to(model.device) for k, v in inputs.items()}
+_ = model(**inputs_on_device)
+```
+
+**Deploy input_ids to device. Use input_ids as input to model**
+```
+input_ids = input_ids.to(model.device)
+outputs = model(input_ids)
+```
+
+### 🎯 3.5.6 model.generate() : Deploy input_ids to device. Use that as input
+
+```
+input_ids = input_ids.to(model.device)
+outputs = model.generate(input_ids=input_ids, max_new_tokens=50)
+```
+
+
