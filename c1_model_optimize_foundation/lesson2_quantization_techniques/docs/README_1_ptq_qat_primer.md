@@ -1,11 +1,12 @@
 ## Topics
-1) Training: Quantization Aware Training. To recover accuracy lost due to quantization
+1) DURING TRAINING: QUANTIZATION AWARE TRAINING.
+   - To recover accuracy lost due to quantization
    - During the training itself  weave quantization awareness into the training. Integrate low bit constraints into training.
    Tools 
     - Hugging Face Optimum
     - ONNX Runtime
     - bitsandbytes
-2) POST TRAINING : Quantization
+2) AFTER TRAINING : POST TRAINING QUANTIZATION
    - Convert full precision weights to lower precision weights. A new model emerges in minutes. \ 
      Example: Convert a FP32 trained model to INT8. Quick offline conversion
    - Dramatically compresses model and reduces size
@@ -19,8 +20,9 @@
   - float32 (7 decimal digits)  : 3.1415927
   - float16 (3-4 decimal digits): 3.140625 (its not 3.1416 because you can only respresent as multiples of powers of 2)
   - int8 and int4 could be 314 or so based on the scale used
+- See T3_EXTRA_EXERCISES/step1_quantization_from_scratch_ksw.ipynb
 
-## Memory: Storage, RAM, VRAM
+# Memory: Storage, RAM, VRAM
 🧠 Where does training happen: GPU or CPU
 - Modern training is almost always on GPU. CPU training is very slow
 
@@ -40,4 +42,3 @@ But when you save a checkpoint:
 ## POST TRAINING QUANTIZATION
 i) Choose scale and zero
 Scale : is the least count of the ruler . A floating-point number that defines the size of a single step in the integer range. A smaller scale means higher precision. (KSW feel this Scale is a misnomer for this, because Scale sounds like Range, but it is actually the least count)
-ii) Post Training Quantization: 
