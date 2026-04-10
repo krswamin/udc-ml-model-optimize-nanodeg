@@ -2,6 +2,18 @@
 
 This repo is meant to be used to keep things organized during content development and act as the source of truth for all projects and exercises related to this course.
 
+### References/ Citations
+- PRIMARY SOURCES
+    - The base repo is from Udacity's ML Model Optimization Nanodegree
+    - Additional sources based on individual topics are cited below
+- L2-T3: QUANTIZATION TECHNIQUES, Extra Exercises
+    - UMAR JAMIL: https://www.youtube.com/watch?v=0VdNflU08yA&t=830s
+    - Code inspired by the original code here : https://github.com/hkproj/quantization-notes/tree/main
+- L3-T2: PRUNING SPARSITY: LORA
+    - EDWARD HU: https://www.youtube.com/watch?v=DhRoTONcyZE&t=34s
+    - Mark Hennings: https://www.youtube.com/watch?v=t1caDsMzWBk
+ 
+
 ## Folder Structure
 
 ### Lesson Folder
