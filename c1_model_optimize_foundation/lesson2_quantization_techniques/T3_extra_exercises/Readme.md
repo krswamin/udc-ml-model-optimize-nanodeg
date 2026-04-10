@@ -1,5 +1,5 @@
 ## References & Citations
-- Refer to this video https://www.youtube.com/watch?v=0VdNflU08yA&t=830s
+- Refer to this video UMAR JAMIL: https://www.youtube.com/watch?v=0VdNflU08yA&t=830s
 - Code inspired by the original code here : 
 https://github.com/hkproj/quantization-notes/tree/main
 
