@@ -12,3 +12,6 @@
 
 # Ignores any directory named data at any level in the repo 
 data/
+
+# Ignores any directory named logs at any level in the repo 
+logs/
