@@ -211,3 +211,55 @@ outputs = model.generate(input_ids=input_ids, max_new_tokens=50)
 ```
 
 
+## 🎯 3.6 model() vs model.generate(): which to use
+
+### 🎯 3.6.1  model() vs model.generate(): WARMUP - which to use
+- warmup should use whatever the main programme is going to use (LOL , what a deadend answer 😂)
+- 🎯 METRICS WARMUP: use whatever the metrics measurement code is going to use
+- 🎯 PROFILING WARMUP : (Example: where you generate prof.key_averages() using pytorch profiler). Yes this process requires profiling too 😅. Use whatever the profiling code will use
+- lets say your main programme is going to run model.generate(), and during the warmup you run model() a few times. These two are not equivalent. see code below
+```
+# The following two are not equivalent even though num_warmup = 10 & max_new_tokens = 10
+
+# Warmup
+num_warmup = 10
+with torch.no_grad():
+    for _ in range(num_warmup):
+        _ = model(**inputs)
+
+
+# Warmup
+max_new_tokens = 10
+with torch.no_grad():
+    _ = model.generate(**inputs, max_new_tokens=max_new_tokens, pad_token_id=tokenizer.eos_token_id)
+
+```
+- model() only warms up the forward pass several times ( recall it does not generate a token even once !)
+- model.generate(): there is much more going on in a model generate loop. It generates new tokens
+
+### 🎯 3.6.2  model() vs model.generate(): METRICS - which to use
+- 🎯 FOR LLMs we like to measure latency, throughput, memory and perplexity. It best to run model.generate(), except for perplexity . Recall that perplexity is the exponent of loss. model.generate() does not return loss, only model() does. Thats a fundamental reason why perplexity uses model() (there are other reasons too. ask AI 😅 )
+  - ✅   see lesson1_intro_to_model_optimization/T1_latency_throughput demo1_example1_latency_throughput_ksw_solution.ipynb : uses model.generate() for latency & throughput
+  - ✅   see lesson1_intro_to_model_optimization/T1_latency_throughput demo1_example1_latency_throughput_ksw_solution.ipynb : uses model.generate() for latency & throughput
+```
+Latency      -> model.generate()
+Throughput   -> model.generate()
+Memory       -> depends, but for inference generation use model.generate()
+Perplexity   -> model(..., labels=...)
+```
+
+- 🎯 If you are getting metrics for a forward pass, you could use model() for everything
+  -  ✅   see lesson1_intro_to_model_optimization/T2_memory_perplexity/demo2_memory_perplexity_ksw.ipynb : uses model() for all including perplexity
+  -  ✅   see lesson1_intro_to_model_optimization/T2_memory_perplexity/exercise2_memory_perplexity_ksw_solution.ipynb : uses model() for all including perplexity
+```
+Latency      -> model()
+Throughput   -> model()
+Memory       -> model()
+Perplexity   -> model(..., labels=...)
+```
+
+- 🎯 For profiling: example getting the prof.key_averages() table using pytorch profiler
+  - ✅ for inference performance: use model.generate()
+  - ✅ training/perplexity: use model()
+
+- 🎯 If you are dealing with a vision transformer model and want to get metrics or profile things, it probably makes sense to use model() for all
