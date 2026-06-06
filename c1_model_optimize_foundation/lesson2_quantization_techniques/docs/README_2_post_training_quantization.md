@@ -21,6 +21,8 @@ There are 3 types of quantizations
 
 ![alt text](readme_imgs/ptq1_high_level_summary.png)
 
+NOTe: When a model is converted from FP32 to FP16 , is that quantization ?
+Answer: No. See ☀️ DETAILS D4 : FP32 to FP16
 ## 🎯 CODE 
 - see lesson2_quantization_techniques/T1_ptq/demo1_post_training_quantization_ksw.ipynb
 
@@ -232,4 +234,37 @@ Note: Activations fully INT8 → maximum runtime memory reduction.
     | GELU            | FP16/FP32       |
 
   ```
-    
+  
+## ☀️ DETAILS D4 : FP32 to FP16: (Precision Reduction. NOT Quantization)
+- Only conversion to INT formats INT8, INT4 would count as quantization
+- FP16 is still floating point format. Hence this is not Quantization
+  - No scale factors are introduced.
+  - No zero-points are introduced.
+  - The model still performs floating-point arithmetic.
+- FP32 to FP16 is conversion is PRECISION REDUCTION
+
+```
+# Rule of Thumb
+FP32 → FP16 = precision reduction
+FP32 → INT8/INT4 = quantization
+```
+
+```
+# FP16 is still floating point format. HAs eponent and mantissa
+
+| Format | Sign | Exponent | Mantissa |
+| ------ | ---- | -------- | -------- |
+| FP32   | 1    | 8        | 23       |
+| FP16   | 1    | 5        | 10       |
+```
+
+```
+| Conversion   | Common Name               | Quantization?  |
+| ------------ | ------------------------- | -------------- |
+| FP32 → FP16  | Half-precision conversion | Usually **No** |
+| FP32 → BF16  | BFloat16 conversion       | Usually **No** |
+| FP32 → INT8  | Integer quantization      | **Yes**        |
+| FP32 → INT4  | Integer quantization      | **Yes**        |
+| FP32 → UINT8 | Integer quantization      | **Yes**        |
+
+```
