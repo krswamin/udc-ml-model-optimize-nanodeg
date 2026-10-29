@@ -9,9 +9,3 @@
 ## 🎯 3)Decoder only architecture
 ![alt text](readme_imgs/transformers_recall/transformers_3.png) 
 
-
-
-
-
-
-###
