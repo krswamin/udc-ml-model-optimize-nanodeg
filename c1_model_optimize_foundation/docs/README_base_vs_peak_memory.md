@@ -1,5 +1,5 @@
-# Profiling Memory
-## Base Memory vs  Peak Memory
+# 🎯 Profiling Memory
+## 🎯 Base Memory vs  Peak Memory
 ```
 torch.cuda.reset_peak_memory_stats()
 peak = torch.cuda.max_memory_allocated()
