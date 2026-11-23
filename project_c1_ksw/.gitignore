@@ -1,0 +1,8 @@
+# Generated GPT-2 model artifacts
+/content/gpt2_*/
+
+# Profiling traces
+/content/*_trace.json
+
+# Logs
+/content/logs/
