@@ -29,35 +29,40 @@ c4_llm_inference_optimize: course 4
 ```
 
 ## 🎯 3) PROJECT FOLDERS
-Each `course` could have a project.
+Each `course` could have a project.\
+The project folders are at the root level for easy accessibility \
 Example
 ``` 
 project_c1_ksw: this is my solution to the project in course 1. 
 ```
 
-The project folders are at the root level for easy accessibility 
+
 
 ## 🎯 4) README /DOCUMENTS FOLDERS 
 
 ```
- Look under individual courses, and individual lessons for more readmes. Readmes are broken down by topic 👓 👀 🔍 🧐 📖 🤓
-
- Look inside the readme under each course for a comprehensive list of readmes
+ 👓 👀 🔍 🧐 📖 🤓
+- READMEs under each course folder have a comprehensive list of readmes 
+- READMEs are broken down by topic
 ```
 
-Individual readmes pertaining to each course are inside the 'docs' folder within each course. \
-These serve as write ups and summaries of my understanding of the important topics \
+`Course 1:Model Optimization Foundation` 
+- [c1_model_optimize_foundation/README_c1_model_optimize_foundation.md](c1_model_optimize_foundation/README_c1_model_optimize_foundation.md) 
 
-Example for `Course 1:Model Optimization Foundation`
-- [c1_model_optimize_foundation/docs/README_base_vs_peak_memory.md](c1_model_optimize_foundation/docs/README_base_vs_peak_memory.md) 
-- [c1_model_optimize_foundation/docs/README_model_metrics.md](c1_model_optimize_foundation/docs/README_model_metrics.md) 
-- [c1_model_optimize_foundation/docs/README_model_vs_model_generate.md](c1_model_optimize_foundation/docs/README_model_vs_model_generate.md)
+\
+`Course 2:Advanced Model Compression` 
+- [c2_advanced_model_compression/README_c2_advanced_model_compression.md](c2_advanced_model_compression/README_c2_advanced_model_compression.md) 
+
+\
+`Course 3:Efficient Architecture`
+- [c3_efficient_architecture/README_c3_efficient_architecture.md](c3_efficient_architecture/README_c3_efficient_architecture.md)
+
+\
+`Course 4:LLM Inference Optimization`
+- [c4_llm_inference_optimize/README_c4_llm_inference_optimize.md](c4_llm_inference_optimize/README_c4_llm_inference_optimize.md)
 
 
-There are also more readmes within each lesson under each course \
-Example for `Course 1:Model Optimization Foundation` , `lesson2_quantization_techniques`
-- [c1_model_optimize_foundation/lesson2_quantization_techniques/docs/README_1_ptq_qat_primer.md](c1_model_optimize_foundation/lesson2_quantization_techniques/docs/README_1_ptq_qat_primer.md) 
--[c1_model_optimize_foundation/lesson2_quantization_techniques/docs/README_2_post_training_quantization.md](c1_model_optimize_foundation/lesson2_quantization_techniques/docs/README_2_post_training_quantization.md)
+
 
 
 
