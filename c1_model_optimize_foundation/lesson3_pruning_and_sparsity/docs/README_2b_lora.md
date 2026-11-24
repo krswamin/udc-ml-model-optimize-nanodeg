@@ -90,8 +90,8 @@ output = x @ W_old + x @ (A @ B)
 ### 3.4) RANK in LORA. 
 What should the rank be
 
-![alt text](readme_imgs/hennings_lora5.png) ![alt text](readme_imgs/hennings_lora6.png)
-![alt text](readme_imgs/hennings_lora7.png) 
+![alt text](readme_imgs/hennings_lora5.png) 
+![alt text](readme_imgs/hennings_lora6.png)
 
 
 ### 3.5) EXAMPLE LORA SAVINGS !

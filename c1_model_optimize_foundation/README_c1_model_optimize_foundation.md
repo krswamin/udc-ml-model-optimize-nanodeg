@@ -26,7 +26,7 @@ There are also readmes under each lesson folder: \
 `lesson2_quantization_techniques`: readmes
 - [lesson2_quantization_techniques/docs/README_1_ptq_qat_primer.md](lesson2_quantization_techniques/docs/README_1_ptq_qat_primer.md) 
 - [lesson2_quantization_techniques/docs/README_2_post_training_quantization.md)](lesson2_quantization_techniques/docs/README_2_post_training_quantization.md)
-- [lesson2_quantization_techniques/T3_extra_exercises/Readme_full_static_ptq.md](lesson2_quantization_techniques/T3_extra_exercises/Readme_full_static_ptq.md)
+- [lesson2_quantization_techniques/T3_extra_exercises/Readme_full_static_ptq.md](lesson2_quantization_techniques/T3_extra_exercises/README_full_static_ptq.md)
 
 `lesson3_pruning_and_sparsity`: readmes
 - [lesson3_pruning_and_sparsity/docs/README_1_unstructured_pruning.md](lesson3_pruning_and_sparsity/docs/README_1_unstructured_pruning.md) 
